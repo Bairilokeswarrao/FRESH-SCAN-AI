@@ -64,8 +64,123 @@
       }
     }
   </style>
+
+  <!-- Compact animated login CSS (integrated) -->
+  <style>
+    .fs-login-screen {
+      min-height: 100vh; width: 100%; display: flex; justify-content: center;
+      align-items: center; padding: 14px; position: relative; overflow: hidden;
+      isolation: isolate; color: white;
+      background: radial-gradient(circle at top left, #173d20, transparent 40%), #06110b;
+    }
+    .fs-login-screen::before, .fs-login-screen::after {
+      content: ""; position: absolute; z-index: -1; width: 360px; height: 360px;
+      border-radius: 50%; border: 1px solid rgba(163,230,53,.16);
+      box-shadow: 0 0 80px rgba(132,204,22,.08), inset 0 0 70px rgba(132,204,22,.04);
+      animation: fs-orbit 18s linear infinite; pointer-events: none;
+    }
+    .fs-login-screen::before { top: -190px; left: -130px; }
+    .fs-login-screen::after { width: 460px; height: 460px; right: -250px; bottom: -260px; animation-direction: reverse; }
+    .fs-login-ambient { position: absolute; inset: 0; overflow: hidden; z-index: -1; pointer-events: none; }
+    .fs-login-glow { position: absolute; width: 170px; height: 170px; border-radius: 50%; filter: blur(55px); opacity: .22; animation: fs-drift 12s ease-in-out infinite alternate; }
+    .fs-login-glow.one { background: #84cc16; top: 12%; left: 10%; }
+    .fs-login-glow.two { background: #10b981; right: 8%; bottom: 10%; animation-delay: -5s; }
+    .fs-login-particle { position: absolute; color: #bef264; opacity: .55; font-size: 20px; animation: fs-float 7s ease-in-out infinite; }
+    .fs-login-particle.p1 { top: 18%; left: 18%; }
+    .fs-login-particle.p2 { top: 28%; right: 18%; }
+    .fs-login-particle.p3 { bottom: 18%; left: 23%; }
+    .fs-login-particle.p4 { bottom: 26%; right: 20%; }
+    .fs-login-container {
+      width: 100%; max-width: 340px; padding: 24px 25px 20px; border-radius: 18px;
+      position: relative; background: rgba(10,28,17,.94);
+      border: 1px solid rgba(163,230,53,.3); box-shadow: 0 15px 50px rgba(0,0,0,.4);
+      backdrop-filter: blur(18px); animation: fs-card-enter .85s ease both;
+    }
+    .fs-login-container::before { content: ""; position: absolute; inset: -1px; padding: 1px; border-radius: inherit; background: linear-gradient(135deg,rgba(190,242,100,.65),transparent 35%,rgba(16,185,129,.45),transparent 80%); -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+    .fs-login-logo { text-align: center; margin-bottom: 18px; }
+    .fs-login-logo-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; margin: 0 auto 9px; border-radius: 14px; background: #a3e635; color: #06110b; font-size: 27px; position: relative; overflow: hidden; animation: fs-logo-pulse 3s ease-in-out infinite; box-shadow: 0 0 30px rgba(163,230,53,.22); }
+    .fs-login-logo-icon::after { content: ""; position: absolute; left: -70%; top: -30%; width: 55%; height: 160%; transform: rotate(25deg); background: rgba(255,255,255,.38); filter: blur(5px); animation: fs-shine 4s ease-in-out infinite; }
+    .fs-login-logo h1 { font-size: 24px; margin-bottom: 5px; font-weight: 700; color: #fff; letter-spacing: -.04em; }
+    .fs-login-green { color: #a3e635; }
+    .fs-login-logo p { color: #a0afa3; font-size: 12px; }
+    .fs-login-container h2 { margin-bottom: 5px; font-size: 21px; font-weight: 700; color: #fff; }
+    .fs-login-subtitle { color: #9ca3af; font-size: 12px; line-height: 1.45; margin-bottom: 17px; }
+    .fs-login-group { margin-bottom: 13px; }
+    .fs-login-container label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: bold; color: #d1d5db; }
+    .fs-login-container input[type="email"], .fs-login-container input[type="password"], .fs-login-container input[type="text"] { width: 100%; padding: 11px 12px; color: white; background: #040c07; border: 1px solid #354538; border-radius: 8px; outline: none; font-size: 13px; transition: border-color .25s,box-shadow .25s; }
+    .fs-login-container input:focus { border-color: #a3e635; box-shadow: 0 0 0 3px rgba(163,230,53,.1); }
+    .fs-login-password-box { position: relative; }
+    .fs-login-password-box input { padding-right: 65px !important; }
+    .fs-login-show-password { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); border: none; background: transparent; color: #a3e635; cursor: pointer; font-size: 12px; }
+    .fs-login-options { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 16px; font-size: 11px; }
+    .fs-login-container .fs-login-remember { display: flex; align-items: center; gap: 6px; color: #a0afa3; margin: 0; font-weight: normal; }
+    .fs-login-remember input { accent-color: #a3e635; }
+    .fs-login-forgot { color: #a3e635; text-decoration: none; white-space: nowrap; }
+    .fs-login-button { width: 100%; padding: 12px; border: none; border-radius: 8px; background: #a3e635; color: #06110b; font-size: 13px; font-weight: bold; cursor: pointer; transition: .3s; position: relative; overflow: hidden; box-shadow: 0 8px 24px rgba(132,204,22,.12); }
+    .fs-login-button:hover { background: #bef264; transform: translateY(-2px); }
+    .fs-login-button::after { content: ""; position: absolute; top: -50%; left: -80%; width: 45%; height: 200%; transform: skewX(-25deg); background: rgba(255,255,255,.35); transition: left .6s ease; }
+    .fs-login-button:hover::after { left: 140%; }
+    .fs-login-button:active { transform: translateY(0) scale(.99); }
+    #fs-login-message { display: none; margin-bottom: 12px; padding: 10px; border-radius: 8px; font-size: 12px; line-height: 1.5; }
+    .fs-login-footer { text-align: center; margin-top: 16px; color: #68776b; font-size: 11px; }
+    .fs-login-note { margin-top: 9px; color: #839286; font-size: 10px; line-height: 1.5; text-align: center; }
+    @keyframes fs-card-enter { from { opacity: 0; transform: translateY(28px) scale(.97); filter: blur(8px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+    @keyframes fs-float { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-18px) rotate(12deg); } }
+    @keyframes fs-drift { from { transform: translate3d(-15px,-10px,0) scale(.9); } to { transform: translate3d(30px,25px,0) scale(1.15); } }
+    @keyframes fs-orbit { to { transform: rotate(360deg); } }
+    @keyframes fs-logo-pulse { 0%,100% { transform: translateY(0); box-shadow: 0 0 25px rgba(163,230,53,.18); } 50% { transform: translateY(-4px); box-shadow: 0 0 42px rgba(163,230,53,.36); } }
+    @keyframes fs-shine { 0%,20% { left: -70%; } 55%,100% { left: 140%; } }
+    @media (max-width: 450px) { .fs-login-container { padding: 22px 18px; } }
+    @media (max-height: 700px) { .fs-login-container { padding-top: 18px; padding-bottom: 16px; } .fs-login-logo { margin-bottom: 12px; } .fs-login-footer { margin-top: 12px; } .fs-login-note { margin-top: 7px; } }
+    @media (prefers-reduced-motion: reduce) { .fs-login-screen *, .fs-login-screen::before, .fs-login-screen::after { animation: none !important; transition: none !important; } }
+  </style>
 </head>
 <body class="text-slate-200 font-sans min-h-screen flex flex-col antialiased selection:bg-lime-500 selection:text-black">
+
+  <!-- ================= COMPACT ANIMATED LOGIN PAGE ================= -->
+  <section id="fs-login-screen" class="fs-login-screen">
+    <div class="fs-login-ambient" aria-hidden="true">
+      <span class="fs-login-glow one"></span>
+      <span class="fs-login-glow two"></span>
+      <span class="fs-login-particle p1">✦</span>
+      <span class="fs-login-particle p2">✧</span>
+      <span class="fs-login-particle p3">✦</span>
+      <span class="fs-login-particle p4">✧</span>
+    </div>
+    <div class="fs-login-container">
+      <div class="fs-login-logo">
+        <div class="fs-login-logo-icon">🌿</div>
+        <h1>FreshScan <span class="fs-login-green">AI</span></h1>
+        <p>Smart Food Quality Inspection</p>
+      </div>
+      <h2>Welcome Back</h2>
+      <p class="fs-login-subtitle">Sign in to inspect food freshness.</p>
+      <form id="fs-login-form">
+        <div class="fs-login-group">
+          <label for="fs-email">Email Address</label>
+          <input type="email" id="fs-email" placeholder="Enter your email" autocomplete="username" required>
+        </div>
+        <div class="fs-login-group">
+          <label for="fs-password">Password</label>
+          <div class="fs-login-password-box">
+            <input type="password" id="fs-password" placeholder="Enter your password" autocomplete="current-password" required>
+            <button type="button" class="fs-login-show-password" id="fs-toggle-password">Show</button>
+          </div>
+        </div>
+        <div class="fs-login-options">
+          <label class="fs-login-remember"><input type="checkbox" id="fs-remember"> Remember me</label>
+          <a href="#" class="fs-login-forgot" id="fs-forgot">Forgot password?</a>
+        </div>
+        <div id="fs-login-message" role="status" aria-live="polite"></div>
+        <button type="submit" class="fs-login-button">Sign In →</button>
+      </form>
+      <p class="fs-login-note">Demo login interface. Connect a secure backend for real account authentication.</p>
+      <div class="fs-login-footer">© <span id="fs-login-year"></span> FreshScan AI</div>
+    </div>
+  </section>
+
+  <div id="app-shell" class="hidden flex-1 flex-col min-h-screen">
+
 
   <!-- ================= TOP NAVIGATION ================= -->
   <header class="bg-[#06110b]/80 backdrop-blur-xl border-b border-lime-500/20 sticky top-0 z-50">
@@ -449,6 +564,62 @@
       </div>
     </div>
   </main>
+  </div><!-- /#app-shell -->
+
+  <!-- Compact animated login JavaScript -->
+  <script>
+    const loginForm = document.getElementById("fs-login-form");
+    const loginScreen = document.getElementById("fs-login-screen");
+    const passwordInput = document.getElementById("fs-password");
+    const togglePassword = document.getElementById("fs-toggle-password");
+    const loginMessage = document.getElementById("fs-login-message");
+    document.getElementById("fs-login-year").textContent = new Date().getFullYear();
+
+    togglePassword.addEventListener("click", function () {
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        togglePassword.textContent = "Hide";
+      } else {
+        passwordInput.type = "password";
+        togglePassword.textContent = "Show";
+      }
+    });
+
+    function showLoginMessage(message, success) {
+      loginMessage.style.display = "block";
+      loginMessage.style.color = success ? "#bef264" : "#fdba74";
+      loginMessage.style.background = success ? "#18351d" : "#38251b";
+      loginMessage.textContent = message;
+    }
+
+    loginForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const email = document.getElementById("fs-email").value.trim();
+      const password = passwordInput.value;
+
+      if (!email || !password) {
+        showLoginMessage("Please enter your email and password.", false);
+        return;
+      }
+
+      // Demo only: this checks that fields are filled; it does not authenticate an account.
+      showLoginMessage("Opening FreshScan AI...", true);
+      setTimeout(function () {
+        loginScreen.style.display = "none";
+        const appShell = document.getElementById("app-shell");
+        if (appShell) {
+          appShell.classList.remove("hidden");
+          appShell.classList.add("flex");
+          if (typeof navigateTo === "function") navigateTo("home", true);
+        }
+      }, 450);
+    });
+
+    document.getElementById("fs-forgot").addEventListener("click", function (event) {
+      event.preventDefault();
+      showLoginMessage("Password recovery is a demo. Connect an authentication backend to enable it.", false);
+    });
+  </script>
 
   <!-- ================= LOGIC & CAMERA STREAM CONTROLLER ================= -->
   <script>
@@ -710,11 +881,10 @@
       }
     }
 
-    // Direct food keywords (used to name the dish)
     const FOOD_TERMS = [
       "taco", "burrito", "enchilada", "quesadilla", "tortilla", "wrap", "guacamole", "salsa", 
       "sandwich", "burger", "cheeseburger", "hotdog", "pizza", "french loaf", "bagel", "pretzel", 
-      "toast", "roll", "bread", "croissant", "bakery", "dough", "roti", "naan", "chapati",
+      "toast", "roll", "bread", "croissant", "bakery", "dough",
       "meat", "beef", "pork", "steak", "chicken", "poultry", "turkey", "fish", "salmon", "tuna", 
       "seafood", "lobster", "crab", "shrimp", "sausage", "bacon", "patty", "meatloaf",
       "apple", "banana", "orange", "lemon", "lime", "fig", "grape", "strawberry", "berry", 
@@ -722,15 +892,10 @@
       "pepper", "bell pepper", "chili", "tomato", "potato", "onion", "garlic", "broccoli", 
       "cabbage", "cauliflower", "zucchini", "carrot", "corn", "mushroom", "lettuce", "spinach", 
       "salad", "artichoke", "bean", "legume", "peas",
-      "rice", "curry", "thali", "biryani", "dal", "sambar", "soup", "stew", "pasta", "spaghetti", 
-      "noodle", "ramen", "egg", "omelet", "cheese", "paneer", "dessert", "cake", 
+      "tray", "plate", "platter", "dish", "bowl", "pot", "skillet", "menu", "dining", "meal", 
+      "soup", "stew", "pasta", "spaghetti", "noodle", "curry", "egg", "cheese", "dessert", "cake", 
       "pastry", "pie", "waffle", "pancake", "snack", "chocolate", "custard", "pudding", "tart",
       "ice cream", "cookie", "biscuit", "muffin", "doughnut", "donut"
-    ];
-
-    // Tableware indicators that verify food context without becoming the item label
-    const SERVING_CONTAINERS = [
-      "tray", "plate", "platter", "dish", "bowl", "pot", "skillet", "menu", "dining table", "table"
     ];
 
     const EXPLICIT_HUMAN_OR_ANIMAL = [
@@ -745,8 +910,7 @@
       }
 
       const t0 = performance.now();
-      // Scan top 10 classifications for better multi-item meal detection
-      const predictions = await mobilenetModel.classify(imgElement, 10);
+      const predictions = await mobilenetModel.classify(imgElement, 5);
       const t1 = performance.now();
 
       lastPredictions = predictions;
@@ -766,42 +930,24 @@
       const topClass = predictions[0] ? predictions[0].className.toLowerCase() : "";
       const allClassNames = predictions.map(p => p.className.toLowerCase()).join(" ");
 
-      // 1. Reject human faces/bodies or animals
       const isPortraitOrAnimal = EXPLICIT_HUMAN_OR_ANIMAL.some(term => topClass.includes(term));
       if (isPortraitOrAnimal) {
         return { isFood: false, detectedName: predictions[0].className.split(",")[0] };
       }
 
-      // 2. Prioritize manually specified label
+      const matchedFoodTerm = FOOD_TERMS.find(term => allClassNames.includes(term));
+      if (matchedFoodTerm) {
+        const specificPrediction = predictions.find(p => FOOD_TERMS.some(term => p.className.toLowerCase().includes(term)));
+        const resolvedName = specificPrediction ? specificPrediction.className.split(",")[0] : predictions[0].className.split(",")[0];
+        return { isFood: true, detectedName: resolvedName };
+      }
+
       const userTypedLabel = document.getElementById('food-label').value.trim();
       if (userTypedLabel.length > 2) {
         return { isFood: true, detectedName: userTypedLabel };
       }
 
-      // 3. Search predictions for actual edible items first
-      const ediblePrediction = predictions.find(p => 
-        FOOD_TERMS.some(term => p.className.toLowerCase().includes(term))
-      );
-
-      if (ediblePrediction) {
-        const rawMatch = ediblePrediction.className.split(",")[0];
-        return { isFood: true, detectedName: rawMatch };
-      }
-
-      // 4. Remap dishware/tray classifications to meal platter
-      const isServingDish = predictions.some(p => 
-        SERVING_CONTAINERS.some(term => p.className.toLowerCase().includes(term))
-      );
-
-      if (isServingDish) {
-        return { isFood: true, detectedName: "Meal Platter / Indian Thali" };
-      }
-
-      // 5. Default fallback
-      return { 
-        isFood: false, 
-        detectedName: predictions[0] ? predictions[0].className.split(",")[0] : "Object" 
-      };
+      return { isFood: false, detectedName: predictions[0] ? predictions[0].className.split(",")[0] : "Object" };
     }
 
     async function startAIAnalysis() {
@@ -815,7 +961,7 @@
       stepEl.innerText = "Analyzing composition with neural network...";
       progressEl.style.width = "30%";
 
-      // Completion guard for image load
+      // Image completion guard
       await new Promise((resolve) => {
         img.onload = () => resolve();
         img.src = selectedImage;
@@ -872,7 +1018,7 @@
         date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
       };
 
-      // Safe localStorage handling
+      // Storage quota safeguard
       try {
         historyData.unshift(currentResult);
         if (historyData.length > 20) historyData.pop();
@@ -887,7 +1033,7 @@
         }
       }
 
-      // Populate Result Card
+      // Populate Result Card with Identified Food Name
       document.getElementById('result-img').src = currentResult.image;
       document.getElementById('result-title').innerText = currentResult.title;
       document.getElementById('result-food-badge').innerText = currentResult.title;
